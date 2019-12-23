@@ -1,0 +1,40 @@
+
+.navbar {
+    background-color: #021C1E;
+}
+
+.back {
+    text-align: center;
+    background-color: #2C7873;
+}
+
+body {
+    color: #FFFFFF;
+    background-color: #6FB98F;
+}
+
+a {
+    color: #FFFFFF;
+}
+
+.header {
+    background-color: #004445;
+}
+
+.header-name {
+    margin-bottom: 0px;
+    padding: 10px 0px 10px 0px;
+}
+
+.custom-btn {
+    min-width: 250px;
+    background-color: #004445;
+    border-color: #004445;
+    margin: 15px 0 15px 0;
+}
+
+.scope {
+    text-align: center;
+    background-color: #2C7873;
+    border-color: #004445;
+}
