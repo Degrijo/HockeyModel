@@ -5,8 +5,7 @@ from random import randint
 
 
 class Main:
-    def main(self):
-        god = Creator()
+    def main(self, god):
         god.create_game()
         god.create_violation()
         god.create_commands()
@@ -21,14 +20,14 @@ class Creator:
     def create_violation(self):
         pass
 
-    def create_commands(self):  # name, soname, number, k_usefull
+    def create_commands(self):
         composition1 = [FieldPlayer('FieldPlayer', f'№{i}', i, str(randint(0, 100)/100)) for i in range(1, 16)]
         goalkeeper1 = Goalkeeper('Goalkeeper', f'№{16}', 16, str(randint(0, 100)/100))
         main_trainer1 = MainTrainer("Main", "Trainer 1")
         second_trainer1 = SecondTrainer("Second", "Trainer 1")
         self.team1 = Team(composition1, goalkeeper1, main_trainer1, second_trainer1)
-        composition2 = [FieldPlayer('FieldPlayer', f'№{i}', i, str(randint(0, 100) / 100)) for i in range(1, 16)]
-        goalkeeper2 = Goalkeeper('Goalkeeper', f'№{16}', 16, str(randint(0, 100) / 100))
+        composition2 = [FieldPlayer('FieldPlayer', f'№{i}', i, str(randint(0, 100) / 100)) for i in range(17, 32)]
+        goalkeeper2 = Goalkeeper('Goalkeeper', f'№{32}', 32, str(randint(0, 100) / 100))
         main_trainer2 = MainTrainer("Main", "Trainer 2")
         second_trainer2 = SecondTrainer("Second", "Trainer 2")
         self.team2 = Team(composition2, goalkeeper2, main_trainer2, second_trainer2)
@@ -90,20 +89,20 @@ class Player(ABC):
         self.violations.append(violation)
 
     def leave(self):
-        pass
+        print(f'{self.name} {self.soname} leaved this game')
 
     def come(self):
-        pass
+        print(f'{self.name} {self.soname} came this game')
 
 
 class Goalkeeper(Player):
     def keep_gate(self):
-        return True if int(self.k_usefull)*100 + randint(0, 25) >= 50 else False
+        return True if float(self.k_usefull)*100 + randint(0, 25) >= 50 else False
 
 
 class FieldPlayer(Player):
     def attack_gate(self):
-        return True if int(self.k_usefull)*100 + randint(0, 25) >= 50 else False
+        return True if float(self.k_usefull)*100 + randint(0, 25) >= 50 else False
 
 
 class Violation:
@@ -112,11 +111,11 @@ class Violation:
 
 
 class ViolationType(Enum):
-    footboard = 1
-    high_hockey_stick = 2
-    shift_rules = 3
-    broken_hockey_stick = 4
-    rough_power_reception = 5
+    footboard = 'footboard'
+    high_hockey_stick = 'high hockey stick'
+    shift_rules = 'shift rules'
+    broken_hockey_stick = 'broken hockey stick'
+    rough_power_reception = 'rough power reception'
 
 
 class Referee(ABC):
@@ -124,19 +123,19 @@ class Referee(ABC):
         self.name, self.soname = name, soname
 
     def continue_game(self, game):
-        pass
+        print('Game continue')
 
     def start_game(self, game):
-        pass
+        print('Game started')
 
     def finish_game(self, game):
-        pass
+        print('Game finished')
 
     def commit_violation(self, player, violation):
-        pass
+        print(f'{self.name} {self.soname} commit {violation.violation_type} of {player.name} {player.soname}')
 
     def throw_ball(self):
-        pass
+        print(f'{self.name} {self.soname} throw ball')
 
     def send_to_freebox(self, player, time):
         return True
@@ -144,12 +143,12 @@ class Referee(ABC):
 
 class MainReferee(Referee):
     def count_goal(self, game):
-        pass
+        print(f'Scope of the game {str(game.goals1)} : {str(game.goals2)}')
 
 
 class LineReferee(Referee):
     def commit_wrong_entrance(self):
-        pass
+        print(f'{self.name} {self.soname} commited wrong entrance')
 
     def commit_forwarding(self):
-        pass
+        print(f'{self.name} {self.soname} commited forwarding')
