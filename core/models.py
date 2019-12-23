@@ -1,6 +1,7 @@
 from abc import ABC
 from enum import Enum
 from time import clock
+from random import randint
 
 
 class Main:
@@ -15,15 +16,25 @@ class Main:
 class Creator:
     def create_game(self):
         self.game = Game(clock(), 0, 0, 0)
+        print('Game created')
 
     def create_violation(self):
         pass
 
-    def create_commands(self):
-        pass
+    def create_commands(self):  # name, soname, number, k_usefull
+        composition1 = [FieldPlayer('FieldPlayer', f'№{i}', i, str(randint(0, 100)/100)) for i in range(1, 16)]
+        goalkeeper1 = Goalkeeper('Goalkeeper', f'№{16}', 16, str(randint(0, 100)/100))
+        main_trainer1 = MainTrainer("Main", "Trainer 1")
+        second_trainer1 = SecondTrainer("Second", "Trainer 1")
+        self.team1 = Team(composition1, goalkeeper1, main_trainer1, second_trainer1)
+        composition2 = [FieldPlayer('FieldPlayer', f'№{i}', i, str(randint(0, 100) / 100)) for i in range(1, 16)]
+        goalkeeper2 = Goalkeeper('Goalkeeper', f'№{16}', 16, str(randint(0, 100) / 100))
+        main_trainer2 = MainTrainer("Main", "Trainer 2")
+        second_trainer2 = SecondTrainer("Second", "Trainer 2")
+        self.team2 = Team(composition2, goalkeeper2, main_trainer2, second_trainer2)
 
     def create_referees(self):
-        pass
+        self.trainers = [MainReferee("Main", "Referee"), LineReferee("Line", "Referee 1"), LineReferee("Line", "Referee 2")]
 
 
 class Game:
@@ -35,11 +46,13 @@ class Team:
     def __init__(self, composition, goalkeeper, main_trainer, second_trainer):
         self.composition, self.goalkeeper, self.main_trainer, self.second_trainer = composition, goalkeeper, \
                                                                                     main_trainer, second_trainer
+        print("Created team")
 
 
 class Trainer(ABC):
     def __init__(self, name, soname):
         self.name, self.soname = name, soname
+        print(f"Created trainer {self.name} {self.soname}")
 
     def give_assistance(self, player):
         print(f"{self.name} {self.soname} gave assistance to {player.name} {player.soname}")
@@ -59,10 +72,16 @@ class MainTrainer(Trainer):
         print(f"{self.name} {self.soname} put {goalkeeper.name} {goalkeeper.soname}")
 
 
+class SecondTrainer(Trainer):
+    def give_advise(self, player):
+        print(f"{self.name} {self.soname} gave advise to {player.name} {player.soname}")
+
+
 class Player(ABC):
     def __init__(self, name, soname, number, k_usefull):
         self.name, self.soname, self.number, self.k_usefull = name, soname, number, k_usefull
         self.violations = []
+        print(f"Created player {self.name} {self.soname}")
 
     def give_pass(self, player):
         pass
@@ -79,12 +98,12 @@ class Player(ABC):
 
 class Goalkeeper(Player):
     def keep_gate(self):
-        pass
+        return True if int(self.k_usefull)*100 + randint(0, 25) >= 50 else False
 
 
 class FieldPlayer(Player):
     def attack_gate(self):
-        pass
+        return True if int(self.k_usefull)*100 + randint(0, 25) >= 50 else False
 
 
 class Violation:
@@ -120,7 +139,7 @@ class Referee(ABC):
         pass
 
     def send_to_freebox(self, player, time):
-        pass
+        return True
 
 
 class MainReferee(Referee):
